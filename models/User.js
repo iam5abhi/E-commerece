@@ -62,8 +62,7 @@ UserSchema.pre('save', async function(next) {
 
 
  UserSchema.methods.additemTocart =function(product){
-     console.log(product)
-     console.log(this.cart.items)
+
         const cartProductIndex =this.cart.items.findIndex(cp=>{
             return cp.productId.toString() ===product._id.toString()
         });
@@ -92,7 +91,7 @@ UserSchema.pre('save', async function(next) {
 
  UserSchema.methods.removeTocart =function(productId){
    
-   const updateCartItems  =thsi.cart.items.filter(items=>{
+   const updateCartItems  =this.cart.items.filter(items=>{
        return items.productId.toString() !==productId.toString()
    })
 

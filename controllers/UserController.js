@@ -126,9 +126,10 @@ exports.PostOder=(req,res,next)=>{
         oder.save()
       })
       .then(result=>{
+         console.log(result)
          const user = await User.findById('6228a79240f8cd30b1722739')
          return user.clearCart()
-          console.log(result)
+          
         })
       .catch(err=>{console.log(err)})
         
