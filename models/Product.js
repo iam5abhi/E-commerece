@@ -4,29 +4,144 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const ProductSchema = new Schema({
-    title:{
+const ProductSchema = mongoose.Schema({
+    productName:{
         type:String,
         required:true
     },
+    maximum_retail_price:{
+        type:Number,
+        required:true
+    },
+    coverImageUrl:{
+        type:String,
+        required:true
+    },
+    imagesUrl:[String],
     price:{
-        type:String,
-        required:true,
-    },
-    description:{
-        type:String,
+        type:Number,
         required:true
     },
-    imageurl:{
+    discount:{
+        type:Number
+    },
+    company_emails:{
         type:String,
-        required:true
+        select:false
+    },
+    company_PhoneNumbers:{
+         type:Number,
+         select:false
+    },    
+    colour:{
+        type:String
+    },
+    ink_Colour:{
+        type:String,
+        select:false
+    },
+    brand:{
+        type:String,
+        select:false
+    },
+    material:{
+        type:String,
+        select:false
+    },
+    item_Dimensions:{
+        type:String,
+        select:false
+    },
+    manufacturer:{
+        type:String,
+        select:false
+    },
+    model_Number:{
+        type:Number,
+        select:false
+    },
+    closure:{
+        type:String,
+        select:false
+    },
+    grip_Type:{
+        type:String,
+        select:false
+    },
+    number_of_Items:{
+        type:Number,
+        select:false
+    },
+    size:{
+        type:String,
+        select:false
+    },
+    capacity:{
+        type:String,
+        select:false
+    },
+    point_Type:{
+        type:String,
+        select:false
+    },
+    manufacturer_Part_Number:{
+        type:String,
+        select:false
+    },
+    country_of_Origin:{
+        type:String
+    },
+    imported_By:{
+        type:String,
+        select:false
+    },
+    ASIN:{
+        type:String,
+        select:false
+    },
+    customer_Reviews:{
+        type:String,
+        select:false
+    },
+    best_sellers_rank:{
+        type:String,
+        select:false
+    },
+    date_first_available:{
+        type:Date,
+        select:false
+    },
+    packer:{
+        type:String,
+        select:false
+    },
+    importer:{
+        type:String,
+        select:false
+    },
+    item_Weight:{
+        type:String
+    },
+    net_quantity:{
+        type:Number
+    },
+    product_description:{
+     type:String
+    },
+    cloudnary_Id:{
+         type:String,
+         required:true
     },
     userId:{
-        type:Schema.Types.ObjectId,
-        ref:'User',
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Admin',
         required:'true'
-    }
-})
+    },
+},
+{
+    timestamps:true
+}
+)
 
 
-module.exports =mongoose.model('Product',ProductSchema)
+module.exports =new mongoose.model('Product',ProductSchema)

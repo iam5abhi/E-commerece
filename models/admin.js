@@ -1,10 +1,11 @@
-const mongoose =require('mongoose')
+const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
+const { model } = require('../db/Db')
 
 
-const Schema = mongoose.Schema
+const Schema   =mongoose.Schema
 
-var UserSchema =  mongoose.Schema({
+const AdminSchema=  mongoose.Schema({
     name:{
         type:String,
         required:true
@@ -20,36 +21,18 @@ var UserSchema =  mongoose.Schema({
     },
     Password:{
           type:String,
-          required:true
+          required:true,
     },
     confirmPassword:{
           type:String,
           required:true
           
     },
-    cart:{
-        items:[
-           {
-                productId:{type:Schema.Types.ObjectId, ref:'Product',required:true},
-                quantity:{ type:Number, required:true }
-           }
-        ]
-    },
-    isCreated:{
-        type:Date,
-        default:Date.now().toString(),
-        select:false
-    },
-    active:{
-        type:Boolean,
-        default:true,
-        select:false
-    }
-},{ timestamps:true})
+},{ timestamps:true })
 
 
 
-UserSchema.pre('save', async function(next) {
+AdminSchema.pre('save', async function(next) {
 
     if(!this.isModified("Password"))return next()
     
@@ -62,7 +45,7 @@ UserSchema.pre('save', async function(next) {
 
 
  //Compare the Password
-UserSchema.methods.correctPassword = async function(
+ AdminSchema.methods.correctPassword = async function(
     candidatePassword,userpassword
     ) 
     {
@@ -70,22 +53,4 @@ UserSchema.methods.correctPassword = async function(
     return await bcrypt.compare(candidatePassword,userpassword)
     }
 
-
-
-
-
- UserSchema.methods.clearCart =function(){
-     this.cart={items:[]}
-     return this.save()
- }
-
-
-
-
-const User =new mongoose.model("User",UserSchema)
-
-module.exports =User
-
-
-
-
+module.exports =new mongoose.model('Admin',AdminSchema)

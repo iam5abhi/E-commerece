@@ -1,11 +1,22 @@
 const express =require('express')
 const shopController =require('../controllers/ShopController')
 const router = express.Router()
+const upload =require('../middleware/upload')
+const IsadminAuthentication =require('../middleware/ADminAuthentication')
+
+router
+    .route('/admin/signup')
+    .post(shopController.admin)
+
 
 
 router
+    .route('/admin/login')   
+    .post(shopController.login) 
+
+router
     .route('/')
-    .post(shopController.addProduct)
+    .post(IsadminAuthentication,upload.fields([{ name: 'imagesUrl', maxCount: 5}]),shopController.addProduct)
 
 
 router
@@ -22,15 +33,23 @@ router
 
 
 router
-     .route('/update-product/:id')    
-     .patch(shopController.updateProduct)
+     .route('/update-product')    
+     .patch(IsadminAuthentication,upload.single('coverimage'),shopController.updateProduct)
 
 
-
-     router
+ router
      .route('/delete-product/:id')    
-     .delete(shopController.deleteProduct)     
+     .delete(IsadminAuthentication,shopController.deleteProduct)
+     
+     
+router
+     .route('/check-oders-details')  
+     .get(IsadminAuthentication,shopController.getOders)   
 
+
+router
+    .route('/getOder')
+    .get(IsadminAuthentication,shopController.getParticularOdersdetails)     
 
 
 module.exports =router

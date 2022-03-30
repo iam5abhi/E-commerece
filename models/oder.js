@@ -1,4 +1,6 @@
+const { type } = require('express/lib/response')
 const mongoose =require('mongoose')
+const { required } = require('nodemon/lib/config')
 
 const Schema = mongoose.Schema
 
@@ -14,6 +16,35 @@ const OderShema =new Schema({
               type:String,
               required:true
           },
+         MoBileNumber:{
+              type:Number,
+              required:true,
+              min:[10,'10 digit number ']
+         },
+         Address:{
+            pinCode:{
+                type:Number,
+                required:true,
+                min:[6,'min 6 digit are rqeuired']
+            },
+            address:{
+                type:String,
+                required:true
+            },
+            town:{
+                   type:String,
+                   required:true
+            },
+           city:{
+               type:String,
+               required:true
+           },
+           state:{
+               type:String,
+               required:true
+           }
+
+         },
           UserId:{
             type:Schema.Types.ObjectId,
             ref:'User',
@@ -21,7 +52,7 @@ const OderShema =new Schema({
         }
     }
    
-})
+},{ timestamps:true})
 
 
 
