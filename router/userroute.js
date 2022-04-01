@@ -18,9 +18,11 @@ router
 
  router 
       .route('/oder')
-      .post(IsAuthentication,UserController.PostOder)
-      .delete(IsAuthentication,UserController.DeleteOder)
+      .post(IsAuthentication,UserController.BuyOder)
+      .put(IsAuthentication,UserController.PostOder)
+      .delete(IsAuthentication,UserController.CancelOder)
 
+     
 
 
 

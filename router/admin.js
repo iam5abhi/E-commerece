@@ -1,7 +1,7 @@
 const express =require('express')
 const shopController =require('../controllers/ShopController')
 const router = express.Router()
-const upload =require('../middleware/upload')
+const upload =require('../utils/upload')
 const IsadminAuthentication =require('../middleware/ADminAuthentication')
 
 router

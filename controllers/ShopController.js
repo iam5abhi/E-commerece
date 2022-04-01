@@ -1,7 +1,7 @@
 const Product =require('../models/Product')
 const Admin =require('../models/admin')
 const Oder =require('../models/oder')
-const  cloudinary =require('../middleware/Cloundnariy')
+const  cloudinary =require('../utils/Cloundnariy')
 const jwt =require('jsonwebtoken')
 const SecretKey =process.env.SERCRETKEY
 
@@ -82,7 +82,6 @@ exports.login =(req,res,next)=>{
               const {
                      productName,
                      maximum_retail_price,
-                     imagesUrl,
                      price,
                      discount,
                      company_emails,
@@ -110,19 +109,34 @@ exports.login =(req,res,next)=>{
                      item_Weight,net_quantity,
                      product_description,
                  }  =req.body
+
                  if(price<maximum_retail_price){
                     const images =[...req.files.imagesUrl]
                     for(let i=0;i<images.length-1;i++){
                         const locaFilePath = images[i].path
-                         cloudinary.uploader.upload(locaFilePath,{
+                     const data = await cloudinary.uploader.upload(locaFilePath,{
+                            resource_type: "image",
+                            overwrite:true,
                             use_filename:true,
                             folder:'PRODUCTS',
                             unique_filename:false
                             
-                        }).then(data=>{
-                            
                         })
+                        var productImageur =[]
+                        productImageur.push(data)
+                        var multipleimageURL=[]
+                        productImageur.map(p=>{
+                              return multipleimageURL.push({
+                                 imagesUrl:p.url,
+                                 cloudnary_Id:p.public_id
+                              })
+                        })
+                        var mm ={
+                            images:multipleimageURL
+                        }
+                        
                     } 
+    
                     const length =images.length-1
                     const coverimage = (await cloudinary.uploader.upload(images[length].path,{
                                use_filename:true,
@@ -135,7 +149,7 @@ exports.login =(req,res,next)=>{
                                   productName,
                                   maximum_retail_price,
                                   coverImageUrl:coverimage.url,
-                                  imagesUrl,
+                                  imagesUrl:mm,
                                   price,
                                   discount,
                                   company_emails,
@@ -165,6 +179,7 @@ exports.login =(req,res,next)=>{
                                   userId:req.admin.userId,
                                   cloudnary_Id:coverimage.public_id
                           })
+                          console.log(product)
                           res.status(201).json({
                               message:'Product Added Sucssfully',
                               product
@@ -238,7 +253,6 @@ exports.login =(req,res,next)=>{
                          folder:'Products',
                          unique_filename:false
                      }))
-                     console.log(images,'mukesh')
                     
                      const UpdatedData ={
                          coverImageUrl:images.url,
@@ -273,7 +287,6 @@ exports.login =(req,res,next)=>{
                        message:'Could not be found'
                    })
              }else{
-                console.log(product.id,"vikas")
                 cloudinary.uploader.destroy(product.cloudnary_Id)
                 const data =    await Product.findByIdAndDelete(product.id)
                 res.status(205).json({
@@ -306,7 +319,7 @@ exports.getOders =(req,res,next)=>{
 }
 
 
-exports.getParticularOdersdetails =()=>{
+exports.getParticularOdersdetails =(req,res,next)=>{
       Oder.findById(req.query.id)
       .then(oder=>{
         res.status(202).json({

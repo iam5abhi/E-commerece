@@ -17,7 +17,14 @@ const ProductSchema = mongoose.Schema({
         type:String,
         required:true
     },
-    imagesUrl:[String],
+    imagesUrl:{
+          images:[
+              {
+                  imagesUrl:{type:String},
+                  cloudnary_Id:{type:String}
+              }
+          ]
+    },
     price:{
         type:Number,
         required:true
